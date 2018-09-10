@@ -21,7 +21,7 @@ import TensorFlow
 var x = Tensor<Float>([[1, 2], [3, 4]])
 
 for i in 1...5 {
-    x += matmul(x, x)
+    x += x • x
 }
 
 print(x)
@@ -37,8 +37,8 @@ your code, has the ability to import any Python library, and has
 built right in. We believe that machine learning tools are so important that they
 deserve **a first-class language and a compiler**.
 
-**Note:** Swift for TensorFlow is an early stage research project. It has been
-released to enable open source development and is not yet ready for general use
+**Note:** Swift for TensorFlow is an early stage project. It has been released
+to enable open source development and is not yet ready for general use
 by machine learning developers.
 
 ## Installation and Usage
@@ -69,6 +69,11 @@ Below are some documents explaining the Swift for TensorFlow project.
 
 - [TensorFlow](https://www.tensorflow.org/api_docs/swift/Structs/Tensor)
 
+### Design proposals
+
+- [One Graph Function per Host Function](https://github.com/tensorflow/swift/blob/master/proposals/OneGraphFunctionPerHostFunction.md)
+- [Parameter Update Design](https://github.com/tensorflow/swift/blob/master/proposals/ParameterUpdate.md)
+
 ## Source code
 
 The active development of Swift for TensorFlow will happen under the 
@@ -86,8 +91,15 @@ as part of being considered for being pulled into master.
 
 ## Models
 
-You can find example models in
+You can find example machine learning models at
 [tensorflow/swift-models](https://github.com/tensorflow/swift-models).
+
+## Related Projects
+
+### Jupyter Notebook support
+
+[Jupyter Notebook](http://jupyter.org/) support for Swift for TensorFlow is under development at
+[google/swift-jupyter](https://github.com/google/swift-jupyter).
 
 ## Community
 

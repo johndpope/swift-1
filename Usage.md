@@ -3,32 +3,28 @@
 This document explains basic usage of Swift for TensorFlow, including:
 * How to run the Swift REPL
 * How to use the Swift interpreter and compiler
-* How to use Swift for TensorFlow with Xcode (Mac only)
+* How to use Swift for TensorFlow with Xcode (**macOS only**)
 
 You must have a working toolchain for Swift for TensorFlow (`swift`, `swiftc`, etc) before proceeding with these instructions. If not, please [install Swift for TensorFlow](Installation.md) or [build from source](https://github.com/apple/swift/blob/tensorflow/README.md) before proceeding.
 
 To see example models written using Swift for TensorFlow, go to [tensorflow/swift-models](https://github.com/tensorflow/swift-models).
 
-**Note:** Swift for TensorFlow is an early stage research project. It has been released to enable open source development and is not yet ready for general use by machine learning developers.
+**Note:** Swift for TensorFlow is an early stage project. It has been released to enable open source development and is not yet ready for general use by machine learning developers.
 
 ## REPL (Read Eval Print Loop)
 
-An easy way to experiment with Swift is the Read Eval Print Loop, or REPL. To try it, open your terminal application and run the following:
-
-* Mac: `swift`
-* Ubuntu: `swift -I/<path-to-toolchain>/usr/lib/swift/clang/include`
-  * This is a necessary workaround for [SR-5524](https://bugs.swift.org/browse/SR-5524), a bug causing modulemap imports to fail in the REPL.
+An easy way to experiment with Swift is the Read Eval Print Loop, or REPL. To try it, open your terminal application and run `swift`.
 
 You should see a prompt, similar to the following:
 
-```
+```console
 Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help for assistance.
   1>
 ```
 
 You can type Swift statements and the REPL will execute them immediately. Results are formatted nicely:
 
-```
+```console
   1> import TensorFlow
   2> var x = Tensor<Float>([[1, 2], [3, 4]])
 x: TensorFlow.Tensor<Float> = [[1.0, 2.0], [3.0, 4.0]]
@@ -85,12 +81,16 @@ The Swift interpreter ran your program and printed the classifier's prediction, 
 
 Next, add executable permissions to `inference.swift`:
 
-    chmod +x inference.swift
+```bash
+chmod +x inference.swift
+```
 
 You can now run `inference.swift` using `./inference.swift`:
 
-    $ ./inference.swift
-    [[0.680704]]
+```console
+$ ./inference.swift
+[[0.680704]]
+```
 
 If you get an error from running `./inference.swift` directly but not from `swift -O inference.swift`, it’s likely because your operating system doesn’t support multi-argument shebang lines.
 
@@ -141,3 +141,15 @@ print(x)
 </p>
 
 **Note:** Xcode Playgrounds are a great interactive environment for prototyping code, but they often hang or crash. If that happens, try restarting Xcode. There are some documented bugs regarding Swift for TensorFlow and Playgrounds. If you discover a new bug, please file an issue.
+
+To build an executable with Xcode 10, you must change some project settings from their default values:
+
+ 1. In the menu bar, select `File > Project Settings...`.
+
+ 2. Then, select `Legacy Build System` for Build Settings and click `Done`.
+
+ 3. In your target's Build Settings:
+   * Go to `Swift Compiler > Code Generation > Optimization Level` and select `Optimize for Speed [-O]`.
+   * Add `libtensorflow.so` and `libtensorflow_framework.so` to `Linked Frameworks and Libraries` and change `Runtime Search Paths`.
+     See [this comment](https://github.com/tensorflow/swift/issues/10#issuecomment-385167803) for specific instructions with screenshots.
+   * Go to `Linking > Other Linker Flags` and add `-lpython` to the list of flags.
